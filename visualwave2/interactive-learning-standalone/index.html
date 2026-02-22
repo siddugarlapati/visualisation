@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive DSA & ML Learning — VisualWave</title>
+    <meta name="description" content="Interactive 3D visualizations for Data Structures, Algorithms, and Machine Learning concepts.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "./node_modules/three/build/three.module.js",
+            "three/examples/jsm/geometries/RoundedBoxGeometry.js": "./node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js",
+            "three/examples/jsm/geometries/TextGeometry.js": "./node_modules/three/examples/jsm/geometries/TextGeometry.js",
+            "three/examples/jsm/loaders/FontLoader.js": "./node_modules/three/examples/jsm/loaders/FontLoader.js",
+            "three/examples/jsm/controls/OrbitControls.js": "./node_modules/three/examples/jsm/controls/OrbitControls.js",
+            "three/examples/jsm/postprocessing/EffectComposer.js": "./node_modules/three/examples/jsm/postprocessing/EffectComposer.js",
+            "three/examples/jsm/postprocessing/RenderPass.js": "./node_modules/three/examples/jsm/postprocessing/RenderPass.js",
+            "three/examples/jsm/postprocessing/UnrealBloomPass.js": "./node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js",
+            "three/examples/jsm/shaders/CopyShader.js": "./node_modules/three/examples/jsm/shaders/CopyShader.js",
+            "three/examples/jsm/shaders/LuminosityHighPassShader.js": "./node_modules/three/examples/jsm/shaders/LuminosityHighPassShader.js",
+            "three/examples/jsm/postprocessing/Pass.js": "./node_modules/three/examples/jsm/postprocessing/Pass.js",
+            "three/examples/jsm/postprocessing/ShaderPass.js": "./node_modules/three/examples/jsm/postprocessing/ShaderPass.js",
+            "gsap": "./node_modules/gsap/index.js"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 class="logo">⚡ VisualWave <span class="badge">Learning</span></h1>
+            </div>
+            <div class="header-right">
+                <div class="backend-status" id="backendStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-layout">
+            <!-- Left Panel: Controls + Explanation -->
+            <aside class="side-panel">
+                <!-- Topic Input -->
+                <div class="panel-section">
+                    <div class="category-tabs">
+                        <button class="tab active" data-category="dsa">🔧 DSA</button>
+                        <button class="tab" data-category="ml">🧠 ML</button>
+                    </div>
+
+                    <div class="input-row">
+                        <input type="text" id="topicInput" placeholder="e.g. Binary Search, K-Means Clustering...">
+                        <button class="btn-generate" id="generateBtn" title="Generate Visualization">▶</button>
+                    </div>
+
+                    <div class="custom-input-row" id="customInputRow" style="display:none;">
+                        <input type="text" id="customInput" placeholder="Custom input (e.g. 5, 3, 8, 1, 9)">
+                    </div>
+                </div>
+
+                <!-- Quick Topics -->
+                <div class="panel-section">
+                    <h3 class="section-title">Quick Topics</h3>
+                    <div class="topic-grid" id="topicGrid"></div>
+                </div>
+
+                <!-- Explanation -->
+                <div class="panel-section explanation-section">
+                    <h3 class="section-title">📖 Step-by-Step</h3>
+                    <div id="stepsContainer" class="steps-container">
+                        <p class="placeholder-text">Select a topic to begin learning</p>
+                    </div>
+                </div>
+
+                <!-- Step Navigation -->
+                <div class="step-nav" id="stepNav" style="display:none;">
+                    <button class="btn-step" id="prevStep">← Prev</button>
+                    <span class="step-counter" id="stepCounter">Step 1/1</span>
+                    <button class="btn-step" id="nextStep">Next →</button>
+                    <button class="btn-step btn-play" id="autoPlay">▶ Auto</button>
+                </div>
+            </aside>
+
+            <!-- Right Panel: 3D Canvas -->
+            <main class="canvas-panel">
+                <canvas id="vizCanvas"></canvas>
+                <div class="canvas-overlay" id="canvasOverlay">
+                    <div class="overlay-content">
+                        <div class="loader" id="loader" style="display:none;"></div>
+                        <p id="overlayText">Select a topic to start visualizing</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

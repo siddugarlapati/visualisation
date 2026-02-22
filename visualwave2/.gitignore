@@ -1,0 +1,73 @@
+# ============================================
+# Frontend (React + Vite)
+# ============================================
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.production
+/frontend/.env.development
+
+# Logs
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/pnpm-debug.log*
+/frontend/lerna-debug.log*
+
+# ============================================
+# Backend (Python FastAPI)
+# ============================================
+/backend/venv/
+/backend/.env
+/backend/__pycache__/
+/backend/*.pyc
+/backend/*.pyo
+/backend/*.pyd
+/backend/.Python
+/backend/env/
+/backend/ENV/
+/backend/.venv/
+
+# Python egg files
+/backend/*.egg
+/backend/*.egg-info/
+/backend/dist/
+/backend/build/
+/backend/pip-log.txt
+/backend/pip-delete-this-directory.txt
+
+# Database files (SQLite for local dev, production uses env var)
+/backend/visualwave.db
+*.db
+
+# Temporary PowerShell helper scripts
+*.ps1
+
+# ============================================
+# IDEs and Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============================================
+# OS Files
+# ============================================
+Thumbs.db
+Desktop.ini
+
+# ============================================
+# Node modules (global)
+# ============================================
+node_modules/
+
+# ============================================
+# Misc
+# ============================================
+*.log
+.cache/
+.gemini/

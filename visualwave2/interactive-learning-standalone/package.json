@@ -1,0 +1,23 @@
+{
+  "name": "interactive-learning-standalone",
+  "version": "1.0.0",
+  "description": "Interactive DSA & ML Learning with Three.js and GSAP animations",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o"
+  },
+  "keywords": [
+    "dsa",
+    "ml",
+    "visualization",
+    "threejs",
+    "gsap",
+    "education"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.160.0",
+    "gsap": "^3.12.5"
+  }
+}

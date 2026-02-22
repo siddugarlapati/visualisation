@@ -1,0 +1,1508 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive DSA & ML Learning</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .search-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .input-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      input[type="text"] {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .btn {
+        padding: 15px 35px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .category-selector {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .category-btn {
+        padding: 10px 25px;
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+      }
+
+      .category-btn.active {
+        background: #667eea;
+        color: white;
+      }
+
+      .category-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        min-height: 600px;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        max-height: 700px;
+      }
+
+      .panel h2 {
+        color: #667eea;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 10px;
+      }
+
+      .explanation-content {
+        line-height: 1.8;
+        color: #333;
+      }
+
+      .explanation-content h3 {
+        color: #764ba2;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      .explanation-content code {
+        background: #f5f5f5;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        color: #e83e8c;
+      }
+
+      .explanation-content pre {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      .explanation-content ul,
+      .explanation-content ol {
+        margin-left: 25px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .explanation-content li {
+        margin-bottom: 8px;
+      }
+
+      #animationCanvas {
+        width: 100%;
+        height: 100%;
+        min-height: 500px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #667eea;
+      }
+
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .example-topics {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .example-topics h4 {
+        color: #667eea;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+      }
+
+      .topic-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .topic-tag {
+        padding: 6px 12px;
+        background: white;
+        border: 1px solid #667eea;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .topic-tag:hover {
+        background: #667eea;
+        color: white;
+      }
+
+      @media (max-width: 1024px) {
+        .content-wrapper {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🚀 Interactive DSA & ML Learning</h1>
+        <p>
+          Ask any topic and see it come to life with explanations and animations
+        </p>
+      </div>
+
+      <div class="search-container">
+        <div class="category-selector">
+          <button class="category-btn active" data-category="dsa">
+            Data Structures & Algorithms
+          </button>
+          <button class="category-btn" data-category="ml">
+            Machine Learning
+          </button>
+        </div>
+
+        <div class="input-group" style="margin-top: 20px">
+          <input
+            type="text"
+            id="topicInput"
+            placeholder="Enter a topic (e.g., Binary Search, Gradient Descent)"
+          />
+          <button class="btn btn-primary" onclick="generateContent()">
+            Generate
+          </button>
+        </div>
+
+        <div class="example-topics">
+          <h4>💡 Example Topics:</h4>
+          <div class="topic-tags" id="exampleTags"></div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="panel">
+          <h2>📚 Explanation</h2>
+          <div id="explanationContent" class="explanation-content">
+            <p style="color: #999; text-align: center; padding: 40px">
+              Enter a topic above and click "Generate" to see the explanation
+              here.
+            </p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>🎬 Animation</h2>
+          <canvas id="animationCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentCategory = "dsa";
+
+      const exampleTopics = {
+        dsa: [
+          "Binary Search",
+          "Quick Sort",
+          "Linked List",
+          "Binary Tree",
+          "Hash Table",
+          "DFS & BFS",
+          "Dynamic Programming",
+        ],
+        ml: [
+          "Linear Regression",
+          "Gradient Descent",
+          "Neural Networks",
+          "Decision Trees",
+          "K-Means Clustering",
+          "Backpropagation",
+          "Overfitting",
+        ],
+      };
+
+      const topicData = {
+        // DSA Topics
+        "binary search": {
+          explanation: `
+                    <h3>What is Binary Search?</h3>
+                    <p>Binary Search is an efficient algorithm for finding a target value within a <strong>sorted array</strong>. It works by repeatedly dividing the search interval in half.</p>
+                    
+                    <h3>How it Works:</h3>
+                    <ol>
+                        <li>Start with the middle element of the sorted array</li>
+                        <li>If the target equals the middle element, we're done!</li>
+                        <li>If the target is less than the middle element, search the left half</li>
+                        <li>If the target is greater than the middle element, search the right half</li>
+                        <li>Repeat until the target is found or the search space is empty</li>
+                    </ol>
+
+                    <h3>Time Complexity:</h3>
+                    <ul>
+                        <li><strong>Best Case:</strong> O(1) - target is at the middle</li>
+                        <li><strong>Average/Worst Case:</strong> O(log n) - very efficient!</li>
+                    </ul>
+
+                    <h3>Example Code:</h3>
+                    <pre>function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;  // Found!
+        } else if (arr[mid] < target) {
+            left = mid + 1;  // Search right
+        } else {
+            right = mid - 1;  // Search left
+        }
+    }
+    
+    return -1;  // Not found
+}</pre>
+
+                    <h3>Key Points:</h3>
+                    <ul>
+                        <li>Array <strong>must be sorted</strong> for binary search to work</li>
+                        <li>Much faster than linear search for large datasets</li>
+                        <li>Divides the problem in half each iteration</li>
+                    </ul>
+                `,
+          animation: "binarySearch",
+        },
+        "quick sort": {
+          explanation: `
+                    <h3>What is Quick Sort?</h3>
+                    <p>Quick Sort is a highly efficient, divide-and-conquer sorting algorithm. It works by selecting a 'pivot' element and partitioning the array around it.</p>
+                    
+                    <h3>How it Works:</h3>
+                    <ol>
+                        <li>Choose a pivot element from the array</li>
+                        <li>Partition: rearrange elements so smaller ones go left, larger ones go right</li>
+                        <li>Recursively apply the same process to the left and right subarrays</li>
+                        <li>Base case: arrays of size 0 or 1 are already sorted</li>
+                    </ol>
+
+                    <h3>Time Complexity:</h3>
+                    <ul>
+                        <li><strong>Best/Average Case:</strong> O(n log n)</li>
+                        <li><strong>Worst Case:</strong> O(n²) - when pivot is always smallest/largest</li>
+                        <li><strong>Space:</strong> O(log n) - for recursion stack</li>
+                    </ul>
+
+                    <h3>Example Code:</h3>
+                    <pre>function quickSort(arr, low = 0, high = arr.length - 1) {
+    if (low < high) {
+        // Partition and get pivot index
+        let pivotIndex = partition(arr, low, high);
+        
+        // Recursively sort left and right
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+    return arr;
+}
+
+function partition(arr, low, high) {
+    let pivot = arr[high];
+    let i = low - 1;
+    
+    for (let j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    return i + 1;
+}</pre>
+
+                    <h3>Advantages:</h3>
+                    <ul>
+                        <li>Very fast in practice</li>
+                        <li>In-place sorting (low memory overhead)</li>
+                        <li>Cache-friendly</li>
+                    </ul>
+                `,
+          animation: "quickSort",
+        },
+        "linked list": {
+          explanation: `
+                    <h3>What is a Linked List?</h3>
+                    <p>A Linked List is a linear data structure where elements (nodes) are connected using pointers. Each node contains data and a reference to the next node.</p>
+                    
+                    <h3>Types of Linked Lists:</h3>
+                    <ul>
+                        <li><strong>Singly Linked List:</strong> Each node points to the next node</li>
+                        <li><strong>Doubly Linked List:</strong> Each node points to both next and previous nodes</li>
+                        <li><strong>Circular Linked List:</strong> Last node points back to the first node</li>
+                    </ul>
+
+                    <h3>Time Complexity:</h3>
+                    <ul>
+                        <li><strong>Access:</strong> O(n) - must traverse from head</li>
+                        <li><strong>Search:</strong> O(n)</li>
+                        <li><strong>Insertion (at head):</strong> O(1)</li>
+                        <li><strong>Deletion (at head):</strong> O(1)</li>
+                    </ul>
+
+                    <h3>Example Code:</h3>
+                    <pre>class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+    }
+    
+    // Insert at beginning
+    insertAtHead(data) {
+        const newNode = new Node(data);
+        newNode.next = this.head;
+        this.head = newNode;
+    }
+    
+    // Search for a value
+    search(value) {
+        let current = this.head;
+        while (current) {
+            if (current.data === value) return true;
+            current = current.next;
+        }
+        return false;
+    }
+}</pre>
+
+                    <h3>Advantages vs Arrays:</h3>
+                    <ul>
+                        <li>Dynamic size (no need to specify size upfront)</li>
+                        <li>Efficient insertion/deletion at beginning</li>
+                        <li>No memory waste from unused allocated space</li>
+                    </ul>
+
+                    <h3>Disadvantages:</h3>
+                    <ul>
+                        <li>No random access (must traverse from head)</li>
+                        <li>Extra memory for storing pointers</li>
+                        <li>Not cache-friendly</li>
+                    </ul>
+                `,
+          animation: "linkedList",
+        },
+
+        // ML Topics
+        "linear regression": {
+          explanation: `
+                    <h3>What is Linear Regression?</h3>
+                    <p>Linear Regression is a supervised learning algorithm used to predict a continuous output variable based on one or more input features. It finds the best-fitting straight line through the data points.</p>
+                    
+                    <h3>The Model:</h3>
+                    <p>For simple linear regression with one feature:</p>
+                    <p><strong>y = mx + b</strong></p>
+                    <ul>
+                        <li><code>y</code> = predicted output</li>
+                        <li><code>m</code> = slope (weight)</li>
+                        <li><code>x</code> = input feature</li>
+                        <li><code>b</code> = y-intercept (bias)</li>
+                    </ul>
+
+                    <h3>How it Works:</h3>
+                    <ol>
+                        <li>Initialize weights (m) and bias (b) randomly</li>
+                        <li>Make predictions using current parameters</li>
+                        <li>Calculate error (difference between prediction and actual)</li>
+                        <li>Adjust parameters to minimize error</li>
+                        <li>Repeat until convergence</li>
+                    </ol>
+
+                    <h3>Cost Function (Mean Squared Error):</h3>
+                    <pre>MSE = (1/n) × Σ(y_actual - y_predicted)²</pre>
+
+                    <h3>Example Code:</h3>
+                    <pre>class LinearRegression {
+    constructor() {
+        this.m = 0;  // slope
+        this.b = 0;  // intercept
+    }
+    
+    predict(x) {
+        return this.m * x + this.b;
+    }
+    
+    fit(X, y, learningRate = 0.01, epochs = 1000) {
+        const n = X.length;
+        
+        for (let i = 0; i < epochs; i++) {
+            let predictions = X.map(x => this.predict(x));
+            
+            // Calculate gradients
+            let dm = (2/n) * X.reduce((sum, x, i) => 
+                sum + x * (predictions[i] - y[i]), 0);
+            let db = (2/n) * predictions.reduce((sum, pred, i) => 
+                sum + (pred - y[i]), 0);
+            
+            // Update parameters
+            this.m -= learningRate * dm;
+            this.b -= learningRate * db;
+        }
+    }
+}</pre>
+
+                    <h3>Use Cases:</h3>
+                    <ul>
+                        <li>Predicting house prices based on size</li>
+                        <li>Forecasting sales based on advertising spend</li>
+                        <li>Estimating temperature based on time of day</li>
+                    </ul>
+                `,
+          animation: "linearRegression",
+        },
+        "gradient descent": {
+          explanation: `
+                    <h3>What is Gradient Descent?</h3>
+                    <p>Gradient Descent is an optimization algorithm used to minimize a cost function by iteratively moving in the direction of steepest descent (negative gradient).</p>
+                    
+                    <h3>The Intuition:</h3>
+                    <p>Imagine you're on a mountain and want to reach the valley (minimum). You look around, find the steepest downward slope, and take a step in that direction. Repeat until you reach the bottom.</p>
+
+                    <h3>The Algorithm:</h3>
+                    <ol>
+                        <li>Start with random parameter values</li>
+                        <li>Calculate the gradient (slope) of the cost function</li>
+                        <li>Update parameters: <code>θ = θ - α × ∇J(θ)</code></li>
+                        <li>Repeat until convergence</li>
+                    </ol>
+
+                    <h3>Key Components:</h3>
+                    <ul>
+                        <li><strong>Learning Rate (α):</strong> Step size for each iteration
+                            <ul>
+                                <li>Too large: might overshoot the minimum</li>
+                                <li>Too small: slow convergence</li>
+                            </ul>
+                        </li>
+                        <li><strong>Gradient (∇J):</strong> Direction and rate of steepest increase</li>
+                        <li><strong>Cost Function (J):</strong> What we're trying to minimize</li>
+                    </ul>
+
+                    <h3>Types of Gradient Descent:</h3>
+                    <ul>
+                        <li><strong>Batch GD:</strong> Uses entire dataset for each update (slow but stable)</li>
+                        <li><strong>Stochastic GD:</strong> Uses one sample at a time (fast but noisy)</li>
+                        <li><strong>Mini-batch GD:</strong> Uses small batches (good balance)</li>
+                    </ul>
+
+                    <h3>Example Code:</h3>
+                    <pre>function gradientDescent(X, y, learningRate = 0.01, epochs = 1000) {
+    let theta = 0;  // parameter to optimize
+    const m = X.length;
+    
+    for (let i = 0; i < epochs; i++) {
+        // Calculate predictions
+        let predictions = X.map(x => theta * x);
+        
+        // Calculate gradient
+        let gradient = (2/m) * X.reduce((sum, x, idx) => 
+            sum + x * (predictions[idx] - y[idx]), 0);
+        
+        // Update parameter
+        theta = theta - learningRate * gradient;
+        
+        // Optional: calculate cost for monitoring
+        let cost = (1/m) * predictions.reduce((sum, pred, idx) => 
+            sum + Math.pow(pred - y[idx], 2), 0);
+        
+        if (i % 100 === 0) {
+            console.log(\`Epoch \${i}: Cost = \${cost}\`);
+        }
+    }
+    
+    return theta;
+}</pre>
+
+                    <h3>Challenges:</h3>
+                    <ul>
+                        <li>Local minima (can get stuck)</li>
+                        <li>Choosing the right learning rate</li>
+                        <li>Saddle points in high dimensions</li>
+                    </ul>
+                `,
+          animation: "gradientDescent",
+        },
+        "neural networks": {
+          explanation: `
+                    <h3>What are Neural Networks?</h3>
+                    <p>Neural Networks are computing systems inspired by biological neural networks. They consist of interconnected nodes (neurons) organized in layers that can learn complex patterns from data.</p>
+                    
+                    <h3>Architecture:</h3>
+                    <ul>
+                        <li><strong>Input Layer:</strong> Receives the input features</li>
+                        <li><strong>Hidden Layers:</strong> Process information through weighted connections</li>
+                        <li><strong>Output Layer:</strong> Produces the final prediction</li>
+                    </ul>
+
+                    <h3>How a Neuron Works:</h3>
+                    <ol>
+                        <li>Receives inputs from previous layer</li>
+                        <li>Multiplies each input by a weight</li>
+                        <li>Sums all weighted inputs and adds bias</li>
+                        <li>Applies activation function</li>
+                        <li>Passes output to next layer</li>
+                    </ol>
+
+                    <h3>Mathematical Formula:</h3>
+                    <pre>output = activation(Σ(weight × input) + bias)</pre>
+
+                    <h3>Common Activation Functions:</h3>
+                    <ul>
+                        <li><strong>ReLU:</strong> f(x) = max(0, x) - most popular for hidden layers</li>
+                        <li><strong>Sigmoid:</strong> f(x) = 1/(1 + e^-x) - outputs between 0 and 1</li>
+                        <li><strong>Tanh:</strong> f(x) = (e^x - e^-x)/(e^x + e^-x) - outputs between -1 and 1</li>
+                        <li><strong>Softmax:</strong> Used for multi-class classification output</li>
+                    </ul>
+
+                    <h3>Training Process:</h3>
+                    <ol>
+                        <li><strong>Forward Propagation:</strong> Input flows through network to produce output</li>
+                        <li><strong>Loss Calculation:</strong> Compare prediction with actual value</li>
+                        <li><strong>Backpropagation:</strong> Calculate gradients of loss w.r.t. weights</li>
+                        <li><strong>Weight Update:</strong> Adjust weights using gradient descent</li>
+                    </ol>
+
+                    <h3>Simple Example Code:</h3>
+                    <pre>class NeuralNetwork {
+    constructor(inputSize, hiddenSize, outputSize) {
+        // Initialize weights randomly
+        this.W1 = randomMatrix(inputSize, hiddenSize);
+        this.W2 = randomMatrix(hiddenSize, outputSize);
+        this.b1 = randomVector(hiddenSize);
+        this.b2 = randomVector(outputSize);
+    }
+    
+    relu(x) {
+        return Math.max(0, x);
+    }
+    
+    forward(X) {
+        // Hidden layer
+        this.z1 = matMul(X, this.W1).add(this.b1);
+        this.a1 = this.z1.map(this.relu);
+        
+        // Output layer
+        this.z2 = matMul(this.a1, this.W2).add(this.b2);
+        return this.z2;
+    }
+}</pre>
+
+                    <h3>Applications:</h3>
+                    <ul>
+                        <li>Image recognition and computer vision</li>
+                        <li>Natural language processing</li>
+                        <li>Speech recognition</li>
+                        <li>Game playing (AlphaGo)</li>
+                        <li>Autonomous vehicles</li>
+                    </ul>
+                `,
+          animation: "neuralNetwork",
+        },
+      };
+
+      // Initialize
+      function init() {
+        updateExampleTags();
+        setupCategoryButtons();
+        setupEnterKey();
+      }
+
+      function setupCategoryButtons() {
+        document.querySelectorAll(".category-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            document
+              .querySelectorAll(".category-btn")
+              .forEach((b) => b.classList.remove("active"));
+            this.classList.add("active");
+            currentCategory = this.dataset.category;
+            updateExampleTags();
+          });
+        });
+      }
+
+      function setupEnterKey() {
+        document
+          .getElementById("topicInput")
+          .addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              generateContent();
+            }
+          });
+      }
+
+      function updateExampleTags() {
+        const tagsContainer = document.getElementById("exampleTags");
+        tagsContainer.innerHTML = "";
+
+        exampleTopics[currentCategory].forEach((topic) => {
+          const tag = document.createElement("span");
+          tag.className = "topic-tag";
+          tag.textContent = topic;
+          tag.onclick = () => {
+            document.getElementById("topicInput").value = topic;
+            generateContent();
+          };
+          tagsContainer.appendChild(tag);
+        });
+      }
+
+      function generateContent() {
+        const topic = document
+          .getElementById("topicInput")
+          .value.trim()
+          .toLowerCase();
+
+        if (!topic) {
+          alert("Please enter a topic!");
+          return;
+        }
+
+        const data = topicData[topic];
+
+        if (data) {
+          // Show explanation
+          document.getElementById("explanationContent").innerHTML =
+            data.explanation;
+
+          // Generate animation
+          generateAnimation(data.animation);
+        } else {
+          // Generic response for unknown topics
+          document.getElementById("explanationContent").innerHTML = `
+                    <h3>Topic: ${topic.charAt(0).toUpperCase() + topic.slice(1)}</h3>
+                    <p>This topic is not yet in our database. Here's what you can do:</p>
+                    <ul>
+                        <li>Try one of the example topics above</li>
+                        <li>Check your spelling</li>
+                        <li>Try a related topic</li>
+                    </ul>
+                    <p><strong>Available topics:</strong></p>
+                    <ul>
+                        ${Object.keys(topicData)
+                          .map(
+                            (t) =>
+                              `<li>${t.charAt(0).toUpperCase() + t.slice(1)}</li>`,
+                          )
+                          .join("")}
+                    </ul>
+                `;
+
+          clearAnimation();
+        }
+      }
+
+      // Animation functions
+      function generateAnimation(type) {
+        const canvas = document.getElementById("animationCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas size
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        // Clear previous animation
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        switch (type) {
+          case "binarySearch":
+            animateBinarySearch(ctx, canvas);
+            break;
+          case "quickSort":
+            animateQuickSort(ctx, canvas);
+            break;
+          case "linkedList":
+            animateLinkedList(ctx, canvas);
+            break;
+          case "linearRegression":
+            animateLinearRegression(ctx, canvas);
+            break;
+          case "gradientDescent":
+            animateGradientDescent(ctx, canvas);
+            break;
+          case "neuralNetwork":
+            animateNeuralNetwork(ctx, canvas);
+            break;
+          default:
+            drawPlaceholder(ctx, canvas);
+        }
+      }
+
+      function clearAnimation() {
+        const canvas = document.getElementById("animationCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawPlaceholder(ctx, canvas);
+      }
+
+      function drawPlaceholder(ctx, canvas) {
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "20px Segoe UI";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          "Animation will appear here",
+          canvas.width / 2,
+          canvas.height / 2,
+        );
+      }
+
+      // Binary Search Animation
+      function animateBinarySearch(ctx, canvas) {
+        const arr = [2, 5, 8, 12, 16, 23, 38, 45, 56, 67, 78];
+        const target = 23;
+        let left = 0;
+        let right = arr.length - 1;
+        let step = 0;
+
+        const boxWidth = 50;
+        const boxHeight = 40;
+        const startX = (canvas.width - arr.length * boxWidth) / 2;
+        const startY = 100;
+
+        function drawStep() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Draw title
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 24px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText("Binary Search Animation", canvas.width / 2, 40);
+          ctx.font = "16px Segoe UI";
+          ctx.fillText(`Searching for: ${target}`, canvas.width / 2, 70);
+
+          // Draw array
+          arr.forEach((val, i) => {
+            const x = startX + i * boxWidth;
+
+            // Determine color
+            if (i < left || i > right) {
+              ctx.fillStyle = "#555555"; // Eliminated
+            } else if (i === Math.floor((left + right) / 2)) {
+              ctx.fillStyle = "#ffd700"; // Current middle
+            } else {
+              ctx.fillStyle = "#667eea"; // Active range
+            }
+
+            ctx.fillRect(x, startY, boxWidth - 2, boxHeight);
+
+            // Draw value
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 18px Segoe UI";
+            ctx.textAlign = "center";
+            ctx.fillText(val, x + boxWidth / 2, startY + boxHeight / 2 + 6);
+
+            // Draw index
+            ctx.fillStyle = "#cccccc";
+            ctx.font = "12px Segoe UI";
+            ctx.fillText(i, x + boxWidth / 2, startY + boxHeight + 20);
+          });
+
+          // Draw pointers
+          if (left <= right) {
+            const mid = Math.floor((left + right) / 2);
+
+            // Left pointer
+            ctx.fillStyle = "#ff6b6b";
+            ctx.fillText(
+              "L",
+              startX + left * boxWidth + boxWidth / 2,
+              startY - 10,
+            );
+
+            // Right pointer
+            ctx.fillStyle = "#4ecdc4";
+            ctx.fillText(
+              "R",
+              startX + right * boxWidth + boxWidth / 2,
+              startY - 10,
+            );
+
+            // Mid pointer
+            ctx.fillStyle = "#ffd700";
+            ctx.fillText(
+              "M",
+              startX + mid * boxWidth + boxWidth / 2,
+              startY + boxHeight + 40,
+            );
+
+            // Status text
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "16px Segoe UI";
+            ctx.textAlign = "center";
+
+            if (arr[mid] === target) {
+              ctx.fillText(
+                `✓ Found ${target} at index ${mid}!`,
+                canvas.width / 2,
+                startY + 120,
+              );
+            } else if (arr[mid] < target) {
+              ctx.fillText(
+                `${arr[mid]} < ${target}, search right half`,
+                canvas.width / 2,
+                startY + 120,
+              );
+            } else {
+              ctx.fillText(
+                `${arr[mid]} > ${target}, search left half`,
+                canvas.width / 2,
+                startY + 120,
+              );
+            }
+          }
+        }
+
+        function animate() {
+          if (left <= right) {
+            const mid = Math.floor((left + right) / 2);
+            drawStep();
+
+            if (arr[mid] === target) {
+              return; // Found!
+            } else if (arr[mid] < target) {
+              setTimeout(() => {
+                left = mid + 1;
+                animate();
+              }, 1500);
+            } else {
+              setTimeout(() => {
+                right = mid - 1;
+                animate();
+              }, 1500);
+            }
+          }
+        }
+
+        animate();
+      }
+
+      // Quick Sort Animation
+      function animateQuickSort(ctx, canvas) {
+        let arr = [64, 34, 25, 12, 22, 11, 90];
+        const boxWidth = 60;
+        const boxHeight = 50;
+        const startX = (canvas.width - arr.length * boxWidth) / 2;
+        const startY = 150;
+
+        function drawArray(highlightIndices = {}) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 24px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText("Quick Sort Animation", canvas.width / 2, 40);
+
+          arr.forEach((val, i) => {
+            const x = startX + i * boxWidth;
+
+            // Color based on role
+            if (highlightIndices.pivot === i) {
+              ctx.fillStyle = "#ff6b6b"; // Pivot
+            } else if (
+              highlightIndices.comparing &&
+              highlightIndices.comparing.includes(i)
+            ) {
+              ctx.fillStyle = "#ffd700"; // Comparing
+            } else if (
+              highlightIndices.sorted &&
+              highlightIndices.sorted.includes(i)
+            ) {
+              ctx.fillStyle = "#51cf66"; // Sorted
+            } else {
+              ctx.fillStyle = "#667eea";
+            }
+
+            ctx.fillRect(x, startY, boxWidth - 5, boxHeight);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 20px Segoe UI";
+            ctx.fillText(val, x + boxWidth / 2, startY + boxHeight / 2 + 7);
+          });
+        }
+
+        // Simple bubble sort for visualization (easier to animate than actual quicksort)
+        let i = 0;
+        let j = 0;
+
+        function animate() {
+          if (i < arr.length) {
+            if (j < arr.length - i - 1) {
+              drawArray({ comparing: [j, j + 1] });
+
+              if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+              }
+
+              j++;
+              setTimeout(animate, 500);
+            } else {
+              j = 0;
+              i++;
+              setTimeout(animate, 500);
+            }
+          } else {
+            drawArray({ sorted: arr.map((_, idx) => idx) });
+            ctx.fillStyle = "#51cf66";
+            ctx.font = "20px Segoe UI";
+            ctx.fillText("✓ Sorted!", canvas.width / 2, startY + 100);
+          }
+        }
+
+        animate();
+      }
+
+      // Linked List Animation
+      function animateLinkedList(ctx, canvas) {
+        const nodes = [
+          { value: 10, x: 100, y: 200 },
+          { value: 20, x: 250, y: 200 },
+          { value: 30, x: 400, y: 200 },
+          { value: 40, x: 550, y: 200 },
+        ];
+
+        function drawNode(node, highlight = false) {
+          const radius = 30;
+
+          // Draw circle
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
+          ctx.fillStyle = highlight ? "#ffd700" : "#667eea";
+          ctx.fill();
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          // Draw value
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 20px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText(node.value, node.x, node.y + 7);
+        }
+
+        function drawArrow(from, to) {
+          const headlen = 15;
+          const dx = to.x - from.x;
+          const dy = to.y - from.y;
+          const angle = Math.atan2(dy, dx);
+
+          ctx.beginPath();
+          ctx.moveTo(from.x + 30, from.y);
+          ctx.lineTo(to.x - 30, to.y);
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 3;
+          ctx.stroke();
+
+          // Arrow head
+          ctx.beginPath();
+          ctx.moveTo(to.x - 30, to.y);
+          ctx.lineTo(
+            to.x - 30 - headlen * Math.cos(angle - Math.PI / 6),
+            to.y - headlen * Math.sin(angle - Math.PI / 6),
+          );
+          ctx.lineTo(
+            to.x - 30 - headlen * Math.cos(angle + Math.PI / 6),
+            to.y - headlen * Math.sin(angle + Math.PI / 6),
+          );
+          ctx.closePath();
+          ctx.fillStyle = "#ffffff";
+          ctx.fill();
+        }
+
+        let currentIndex = 0;
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 24px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText("Linked List Traversal", canvas.width / 2, 40);
+
+          // Draw all nodes and arrows
+          for (let i = 0; i < nodes.length; i++) {
+            drawNode(nodes[i], i === currentIndex);
+            if (i < nodes.length - 1) {
+              drawArrow(nodes[i], nodes[i + 1]);
+            }
+          }
+
+          // Draw HEAD pointer
+          ctx.fillStyle = "#ff6b6b";
+          ctx.font = "16px Segoe UI";
+          ctx.fillText("HEAD", nodes[0].x, nodes[0].y - 50);
+
+          // Draw NULL
+          ctx.fillStyle = "#cccccc";
+          ctx.fillText(
+            "NULL",
+            nodes[nodes.length - 1].x + 100,
+            nodes[nodes.length - 1].y,
+          );
+
+          // Status
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "18px Segoe UI";
+          ctx.fillText(
+            `Current Node: ${nodes[currentIndex].value}`,
+            canvas.width / 2,
+            350,
+          );
+
+          currentIndex++;
+          if (currentIndex < nodes.length) {
+            setTimeout(animate, 1000);
+          } else {
+            ctx.fillStyle = "#51cf66";
+            ctx.fillText("✓ Traversal Complete!", canvas.width / 2, 380);
+          }
+        }
+
+        animate();
+      }
+
+      // Linear Regression Animation
+      function animateLinearRegression(ctx, canvas) {
+        const points = [
+          { x: 1, y: 2 },
+          { x: 2, y: 4 },
+          { x: 3, y: 5 },
+          { x: 4, y: 4 },
+          { x: 5, y: 7 },
+          { x: 6, y: 8 },
+          { x: 7, y: 9 },
+          { x: 8, y: 10 },
+        ];
+
+        let m = 0; // slope
+        let b = 1; // intercept
+        const learningRate = 0.01;
+        let epoch = 0;
+        const maxEpochs = 100;
+
+        function scaleX(x) {
+          return 100 + x * 60;
+        }
+
+        function scaleY(y) {
+          return canvas.height - 100 - y * 30;
+        }
+
+        function predict(x) {
+          return m * x + b;
+        }
+
+        function drawPoints() {
+          ctx.fillStyle = "#ffd700";
+          points.forEach((p) => {
+            ctx.beginPath();
+            ctx.arc(scaleX(p.x), scaleY(p.y), 6, 0, 2 * Math.PI);
+            ctx.fill();
+          });
+        }
+
+        function drawLine() {
+          ctx.beginPath();
+          ctx.moveTo(scaleX(0), scaleY(predict(0)));
+          ctx.lineTo(scaleX(10), scaleY(predict(10)));
+          ctx.strokeStyle = "#667eea";
+          ctx.lineWidth = 3;
+          ctx.stroke();
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Title
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 24px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText("Linear Regression", canvas.width / 2, 40);
+
+          // Draw axes
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(80, canvas.height - 80);
+          ctx.lineTo(canvas.width - 80, canvas.height - 80);
+          ctx.moveTo(80, canvas.height - 80);
+          ctx.lineTo(80, 80);
+          ctx.stroke();
+
+          drawPoints();
+          drawLine();
+
+          // Info
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "16px Segoe UI";
+          ctx.textAlign = "left";
+          ctx.fillText(`Epoch: ${epoch}`, 20, 80);
+          ctx.fillText(`y = ${m.toFixed(2)}x + ${b.toFixed(2)}`, 20, 105);
+
+          // Gradient descent step
+          if (epoch < maxEpochs) {
+            let dm = 0,
+              db = 0;
+            points.forEach((p) => {
+              const pred = predict(p.x);
+              const error = pred - p.y;
+              dm += (2 / points.length) * p.x * error;
+              db += (2 / points.length) * error;
+            });
+
+            m -= learningRate * dm;
+            b -= learningRate * db;
+            epoch++;
+
+            setTimeout(animate, 50);
+          } else {
+            ctx.fillStyle = "#51cf66";
+            ctx.font = "18px Segoe UI";
+            ctx.textAlign = "center";
+            ctx.fillText(
+              "✓ Model Converged!",
+              canvas.width / 2,
+              canvas.height - 30,
+            );
+          }
+        }
+
+        animate();
+      }
+
+      // Gradient Descent Animation
+      function animateGradientDescent(ctx, canvas) {
+        let x = -2;
+        const learningRate = 0.1;
+        let step = 0;
+        const maxSteps = 30;
+
+        function f(x) {
+          return x * x; // Simple parabola
+        }
+
+        function gradient(x) {
+          return 2 * x; // Derivative
+        }
+
+        function scaleX(x) {
+          return canvas.width / 2 + x * 80;
+        }
+
+        function scaleY(y) {
+          return canvas.height - 100 - y * 20;
+        }
+
+        function drawFunction() {
+          ctx.beginPath();
+          ctx.strokeStyle = "#667eea";
+          ctx.lineWidth = 3;
+
+          for (let i = -3; i <= 3; i += 0.1) {
+            const px = scaleX(i);
+            const py = scaleY(f(i));
+            if (i === -3) {
+              ctx.moveTo(px, py);
+            } else {
+              ctx.lineTo(px, py);
+            }
+          }
+          ctx.stroke();
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Title
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 24px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText("Gradient Descent Optimization", canvas.width / 2, 40);
+
+          // Draw axes
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(50, canvas.height - 80);
+          ctx.lineTo(canvas.width - 50, canvas.height - 80);
+          ctx.stroke();
+
+          drawFunction();
+
+          // Draw current point
+          ctx.fillStyle = "#ffd700";
+          ctx.beginPath();
+          ctx.arc(scaleX(x), scaleY(f(x)), 8, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Draw gradient arrow
+          const grad = gradient(x);
+          const arrowLen = 40;
+          ctx.strokeStyle = "#ff6b6b";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(scaleX(x), scaleY(f(x)));
+          ctx.lineTo(scaleX(x) - arrowLen, scaleY(f(x)) + grad * arrowLen);
+          ctx.stroke();
+
+          // Info
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "16px Segoe UI";
+          ctx.textAlign = "left";
+          ctx.fillText(`Step: ${step}`, 20, 80);
+          ctx.fillText(`x = ${x.toFixed(3)}`, 20, 105);
+          ctx.fillText(`f(x) = ${f(x).toFixed(3)}`, 20, 130);
+          ctx.fillText(`gradient = ${grad.toFixed(3)}`, 20, 155);
+
+          if (step < maxSteps && Math.abs(grad) > 0.01) {
+            x = x - learningRate * grad;
+            step++;
+            setTimeout(animate, 300);
+          } else {
+            ctx.fillStyle = "#51cf66";
+            ctx.font = "18px Segoe UI";
+            ctx.textAlign = "center";
+            ctx.fillText(
+              "✓ Reached Minimum!",
+              canvas.width / 2,
+              canvas.height - 30,
+            );
+          }
+        }
+
+        animate();
+      }
+
+      // Neural Network Animation
+      function animateNeuralNetwork(ctx, canvas) {
+        const layers = [
+          { neurons: 3, x: 150, label: "Input" },
+          { neurons: 4, x: 350, label: "Hidden" },
+          { neurons: 2, x: 550, label: "Output" },
+        ];
+
+        let activationStep = 0;
+        const maxSteps = 20;
+
+        function drawNeuron(x, y, active = false) {
+          const radius = 20;
+
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, 2 * Math.PI);
+          ctx.fillStyle = active ? "#ffd700" : "#667eea";
+          ctx.fill();
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+
+        function drawConnection(x1, y1, x2, y2, active = false) {
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.strokeStyle = active ? "#ffd700" : "rgba(255, 255, 255, 0.3)";
+          ctx.lineWidth = active ? 3 : 1;
+          ctx.stroke();
+        }
+
+        function getNeuronY(layerIndex, neuronIndex) {
+          const layer = layers[layerIndex];
+          const spacing = 80;
+          const startY = (canvas.height - (layer.neurons - 1) * spacing) / 2;
+          return startY + neuronIndex * spacing;
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Title
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 24px Segoe UI";
+          ctx.textAlign = "center";
+          ctx.fillText("Neural Network Forward Pass", canvas.width / 2, 40);
+
+          // Draw connections first
+          for (let l = 0; l < layers.length - 1; l++) {
+            for (let i = 0; i < layers[l].neurons; i++) {
+              for (let j = 0; j < layers[l + 1].neurons; j++) {
+                const x1 = layers[l].x;
+                const y1 = getNeuronY(l, i);
+                const x2 = layers[l + 1].x;
+                const y2 = getNeuronY(l + 1, j);
+
+                const active = activationStep > l * 5;
+                drawConnection(x1, y1, x2, y2, active);
+              }
+            }
+          }
+
+          // Draw neurons
+          layers.forEach((layer, layerIndex) => {
+            for (let i = 0; i < layer.neurons; i++) {
+              const y = getNeuronY(layerIndex, i);
+              const active = activationStep > layerIndex * 5;
+              drawNeuron(layer.x, y, active);
+            }
+
+            // Layer label
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "16px Segoe UI";
+            ctx.textAlign = "center";
+            ctx.fillText(layer.label, layer.x, canvas.height - 30);
+          });
+
+          // Info
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "16px Segoe UI";
+          ctx.textAlign = "left";
+          ctx.fillText(`Activation Step: ${activationStep}`, 20, 80);
+
+          if (activationStep < maxSteps) {
+            activationStep++;
+            setTimeout(animate, 200);
+          } else {
+            ctx.fillStyle = "#51cf66";
+            ctx.font = "18px Segoe UI";
+            ctx.textAlign = "center";
+            ctx.fillText(
+              "✓ Forward Pass Complete!",
+              canvas.width / 2,
+              canvas.height - 60,
+            );
+          }
+        }
+
+        animate();
+      }
+
+      // Initialize on load
+      window.addEventListener("load", init);
+    </script>
+  </body>
+</html>
